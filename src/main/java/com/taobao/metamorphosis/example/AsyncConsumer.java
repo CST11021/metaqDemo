@@ -54,6 +54,9 @@ public class AsyncConsumer {
 
             @Override
             public void recieveMessages(final Message message) {
+                // if (true) {
+                //     throw new RuntimeException("Ïû·ÑÊ§°Ü£¬message = " + message.toString());
+                // }
                 System.out.println("Receive message " + new String(message.getData()));
             }
 

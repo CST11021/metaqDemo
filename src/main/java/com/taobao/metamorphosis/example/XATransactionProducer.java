@@ -52,11 +52,20 @@ public class XATransactionProducer {
 
 
     private static XADataSource getXADataSource() throws SQLException {
+        /**
+         请在test库里创建orders表：
+         CREATE TABLE `test`.`orders` (
+         `id` int(11) NOT NULL AUTO_INCREMENT,
+         `uid` int(11) NOT NULL,
+         `address` varchar(255) NOT NULL,
+         PRIMARY KEY (`id`)
+         );
+         */
         final MysqlXADataSource mysqlXADataSource = new MysqlXADataSource();
         mysqlXADataSource
         .setUrl("jdbc:mysql://localhost:3306/test?characterEncoding=utf8&connectTimeout=1000&autoReconnect=true");
         mysqlXADataSource.setUser("root");
-        mysqlXADataSource.setPassword("");
+        mysqlXADataSource.setPassword("123456");
         mysqlXADataSource.setPreparedStatementCacheSize(20);
         return mysqlXADataSource;
     }
