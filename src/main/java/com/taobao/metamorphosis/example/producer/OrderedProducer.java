@@ -15,7 +15,7 @@
  * Authors:
  *   wuhua <wq163@163.com> , boyan <killme2008@gmail.com>
  */
-package com.taobao.metamorphosis.example;
+package com.taobao.metamorphosis.example.producer;
 
 import static com.taobao.metamorphosis.example.Help.initMetaConfig;
 
@@ -33,6 +33,7 @@ import com.taobao.metamorphosis.client.extension.producer.OrderedMessagePartitio
 import com.taobao.metamorphosis.client.producer.MessageProducer;
 import com.taobao.metamorphosis.client.producer.SendResult;
 import com.taobao.metamorphosis.cluster.Partition;
+import com.taobao.metamorphosis.example.config.MetaqConfigConstant;
 
 
 /**
@@ -43,6 +44,10 @@ import com.taobao.metamorphosis.cluster.Partition;
  */
 
 public class OrderedProducer {
+
+    /** publish topic */
+    public final static String topic = MetaqConfigConstant.TOPIC;
+
     public static void main(final String[] args) throws Exception {
 
         final MetaClientConfig metaClientConfig = initMetaConfig();
@@ -54,12 +59,9 @@ public class OrderedProducer {
 
         // New session factory,强烈建议使用单例
         final OrderedMessageSessionFactory sessionFactory = new OrderedMetaMessageSessionFactory(metaClientConfig);
-
         // create producer,强烈建议使用单例
         final MessageProducer producer = sessionFactory.createProducer(new CustomPartitionSelector());
 
-        // publish topic
-        final String topic = "meta-test";
         producer.publish(topic);
 
         final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -70,8 +72,7 @@ public class OrderedProducer {
             // check result
             if (!sendResult.isSuccess()) {
                 System.err.println("Send message failed,error message:" + sendResult.getErrorMessage());
-            }
-            else {
+            } else {
                 System.out.println("Send message successfully,sent to " + sendResult.getPartition());
             }
         }

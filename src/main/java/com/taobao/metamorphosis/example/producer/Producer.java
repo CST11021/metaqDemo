@@ -15,7 +15,7 @@
  * Authors:
  *   wuhua <wq163@163.com> , boyan <killme2008@gmail.com>
  */
-package com.taobao.metamorphosis.example;
+package com.taobao.metamorphosis.example.producer;
 
 import static com.taobao.metamorphosis.example.Help.initMetaConfig;
 
@@ -28,6 +28,7 @@ import com.taobao.metamorphosis.client.MessageSessionFactory;
 import com.taobao.metamorphosis.client.MetaMessageSessionFactory;
 import com.taobao.metamorphosis.client.producer.MessageProducer;
 import com.taobao.metamorphosis.client.producer.SendResult;
+import com.taobao.metamorphosis.example.config.MetaqConfigConstant;
 
 
 /**
@@ -65,24 +66,25 @@ singleton bean。MessageProducer创建的代价昂贵，每次都需要通过zk查找服务器并创建t
 
  */
 public class Producer {
+
+    public final static String topic = MetaqConfigConstant.TOPIC;
+
     public static void main(final String[] args) throws Exception {
         // New session factory,强烈建议使用单例
         final MessageSessionFactory sessionFactory = new MetaMessageSessionFactory(initMetaConfig());
         // create producer,强烈建议使用单例
         final MessageProducer producer = sessionFactory.createProducer();
         // publish topic
-        final String topic = "meta-test";
         producer.publish(topic);
 
+        String line;
         final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String line = null;
         while ((line = readLine(reader)) != null) {
             // send message
             final SendResult sendResult = producer.sendMessage(new Message(topic, line.getBytes()));
             if (!sendResult.isSuccess()) {
                 System.err.println("Send message failed,error message:" + sendResult.getErrorMessage());
-            }
-            else {
+            } else {
                 System.out.println("Send message successfully,sent to " + sendResult.getPartition());
             }
         }

@@ -15,7 +15,7 @@
  * Authors:
  *   wuhua <wq163@163.com> , boyan <killme2008@gmail.com>
  */
-package com.taobao.metamorphosis.example;
+package com.taobao.metamorphosis.example.producer;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -30,7 +30,7 @@ import javax.transaction.TransactionManager;
 import javax.transaction.xa.XAResource;
 
 import com.taobao.metamorphosis.client.producer.XAMessageProducer;
-import com.taobao.metamorphosis.example.XACallback.Status;
+import com.taobao.metamorphosis.example.producer.XACallback.Status;
 import com.taobao.metamorphosis.exception.MetaClientException;
 
 

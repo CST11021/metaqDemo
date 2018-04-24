@@ -21,6 +21,7 @@ import static com.taobao.metamorphosis.example.Help.initMetaConfig;
 
 import java.util.concurrent.Executor;
 
+import com.taobao.metamorphosis.example.config.MetaqConfigConstant;
 import net.rubyeye.xmemcached.MemcachedClient;
 import net.rubyeye.xmemcached.XMemcachedClient;
 import net.rubyeye.xmemcached.utils.AddrUtil;
@@ -43,6 +44,13 @@ import com.taobao.metamorphosis.client.consumer.SimpleFetchManager;
  * 
  */
 public class AsyncConsumer {
+
+    /** subscribe topic */
+    public final static String topic = MetaqConfigConstant.TOPIC;
+
+    /** consumer group */
+    public final static String group = MetaqConfigConstant.GROUP;
+
     public static void main(final String[] args) throws Exception {
         // 使用memcached防止重复消息
         MemcachedClient mc = new XMemcachedClient(AddrUtil.getAddresses("localhost:11211"));
@@ -52,31 +60,23 @@ public class AsyncConsumer {
         // New session factory,强烈建议使用单例
         final MessageSessionFactory sessionFactory = new MetaMessageSessionFactory(initMetaConfig());
 
-        // subscribed topic
-        final String topic = "meta-test";
-        // consumer group
-        final String group = "meta-example";
         // create consumer,强烈建议使用单例
         ConsumerConfig consumerConfig = new ConsumerConfig(group);
         // 默认最大获取延迟为5秒，这里设置成100毫秒，请根据实际应用要求做设置。
         consumerConfig.setMaxDelayFetchTimeInMills(100);
         final MessageConsumer consumer = sessionFactory.createConsumer(consumerConfig);
-        // subscribe topic
-        consumer.subscribe(topic, 1024 * 1024, new MessageListener() {
 
+        consumer.subscribe(topic, 1024 * 1024, new MessageListener() {
             @Override
             public void recieveMessages(final Message message) {
                 System.out.println("Receive message " + new String(message.getData()));
             }
-
-
             @Override
             public Executor getExecutor() {
                 // Thread pool to process messages,maybe null.
                 return null;
             }
         });
-        // complete subscribe
         consumer.completeSubscribe();
 
     }

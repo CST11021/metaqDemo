@@ -18,6 +18,7 @@
 package com.taobao.metamorphosis.example;
 
 import com.taobao.metamorphosis.client.MetaClientConfig;
+import com.taobao.metamorphosis.example.config.MetaqConfigConstant;
 import com.taobao.metamorphosis.utils.ZkUtils.ZKConfig;
 
 
@@ -32,8 +33,8 @@ public class Help {
         final MetaClientConfig metaClientConfig = new MetaClientConfig();
         final ZKConfig zkConfig = new ZKConfig();
         //…Ë÷√zookeeperµÿ÷∑
-        zkConfig.zkConnect = "127.0.0.1:2181";
-        zkConfig.zkRoot = "/meta";
+        zkConfig.zkConnect = MetaqConfigConstant.ZOOKEEPER;
+        zkConfig.zkRoot = MetaqConfigConstant.ZOOKEEPER_ROOT;
         metaClientConfig.setZkConfig(zkConfig);
         return metaClientConfig;
     }

@@ -15,7 +15,7 @@
  * Authors:
  *   wuhua <wq163@163.com> , boyan <killme2008@gmail.com>
  */
-package com.taobao.metamorphosis.example;
+package com.taobao.metamorphosis.example.producer;
 
 import static com.taobao.metamorphosis.example.Help.initMetaConfig;
 
@@ -27,6 +27,7 @@ import com.taobao.metamorphosis.Message;
 import com.taobao.metamorphosis.client.MessageSessionFactory;
 import com.taobao.metamorphosis.client.MetaMessageSessionFactory;
 import com.taobao.metamorphosis.client.producer.MessageProducer;
+import com.taobao.metamorphosis.example.config.MetaqConfigConstant;
 
 
 /**
@@ -37,20 +38,21 @@ import com.taobao.metamorphosis.client.producer.MessageProducer;
  * 
  */
 public class TransactionProducer {
+
+    public final static String topic = MetaqConfigConstant.TOPIC;
+
     public static void main(final String[] args) throws Exception {
         // New session factory,强烈建议使用单例
         final MessageSessionFactory sessionFactory = new MetaMessageSessionFactory(initMetaConfig());
         // create producer,强烈建议使用单例
         final MessageProducer producer = sessionFactory.createProducer();
-        // publish topic
-        final String topic = "meta-test";
-        producer.publish(topic);
 
+        producer.publish(topic);
         // 设置事务超时为10秒
         producer.setTransactionTimeout(10);
 
+        String line;
         final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String line = null;
         while ((line = readLine(reader)) != null) {
             try {
                 // 开始事务
@@ -67,7 +69,6 @@ public class TransactionProducer {
                 }
                 // 提交
                 producer.commit();
-
             }
             catch (final Exception e) {
                 producer.rollback();

@@ -19,6 +19,7 @@ import com.taobao.metamorphosis.storm.spout.MetaSpout;
 
 
 public class TestTopology {
+
     public static class FailEveryOther extends BaseRichBolt {
 
         OutputCollector _collector;
@@ -48,7 +49,6 @@ public class TestTopology {
         }
     }
 
-
     public static void main(String[] args) {
         TopologyBuilder builder = new TopologyBuilder();
         builder.setSpout("spout",
@@ -64,4 +64,5 @@ public class TestTopology {
         LocalCluster cluster = new LocalCluster();
         cluster.submitTopology("test", conf, builder.createTopology());
     }
+
 }

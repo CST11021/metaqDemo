@@ -15,7 +15,7 @@
  * Authors:
  *   wuhua <wq163@163.com> , boyan <killme2008@gmail.com>
  */
-package com.taobao.metamorphosis.example;
+package com.taobao.metamorphosis.example.producer;
 
 import java.sql.Connection;
 
